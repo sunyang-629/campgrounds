@@ -10,7 +10,8 @@ app.set("view engine", "ejs");
 
 const campgroundSchema = new mongoose.Schema({
     name: String,
-    image:String
+    image: String,
+    description:String,
 })
 
 const Campground = mongoose.model("Campground", campgroundSchema);
@@ -46,8 +47,18 @@ app.get("/campgrounds", function (req, res) {
         if (err) {
             console.log(err);
         }
-        res.render("campgrounds",{campgrounds});
+        res.render("index",{campgrounds});
     })
+
+})
+
+app.get("/campgrounds/:id", function (req, res) {
+    Campground.findById(req.params.id, (err, foundCampground) => {
+        if (err) {
+            console.log(err);
+        }
+        res.render("show", {campground:foundCampground})
+    });
 
 })
 
