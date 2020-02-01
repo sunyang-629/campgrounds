@@ -2,19 +2,16 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const Campground = require('./models/campground');
+const seedDB = require('./seeds');
 
+seedDB();
 mongoose.connect("mongodb://localhost:27017/TWDB", { useNewUrlParser: true,  useUnifiedTopology: true })
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-const campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description:String,
-})
 
-const Campground = mongoose.model("Campground", campgroundSchema);
 
 // Campground.create({
 //     name: "Salmon Creek", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOnXO5O-5s0EcQCBxL5JMKmg9GgU9M2D7c5tzriDISy_oDkvVB&s"
@@ -52,24 +49,25 @@ app.get("/campgrounds", function (req, res) {
 
 })
 
+
+app.get("/campgrounds/new", function (req, res) {
+    res.render("new");
+}) 
+
 app.get("/campgrounds/:id", function (req, res) {
-    Campground.findById(req.params.id, (err, foundCampground) => {
+    Campground.findById(req.params.id, (err, campground) => {
         if (err) {
             console.log(err);
         }
-        res.render("show", {campground:foundCampground})
+        res.render("show", {campground})
     });
-
-})
-
-app.get("/campgrounds/new", function (req, res) {
-    res.render("new.ejs");
 })
 
 app.post("/campgrounds", function (req, res) {
     var name = req.body.name;
     var image = req.body.image;
-    const newCampground = { name, image };
+    var description = req.body.description;
+    const newCampground = { name, image, description };
     // campgrounds.push(newCampground);
     Campground.create(newCampground, (err, newlyCreated) => {
         if (err) {
