@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const User = require('./models/user');
+const User = require('./../models/user');
+const passport = require('passport');
 
 
 
-app.get("/", function(req, res){
+router.get("/", function(req, res){
     res.render("landing");
 })
 

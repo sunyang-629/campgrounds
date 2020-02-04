@@ -34,9 +34,9 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use(campgroundRoutes);
-app.use(commentRoutes);
-app.use(authRoutes);
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/comments', commentRoutes);
+app.use('/', authRoutes);
 
 // Campground.create({
 //     name: "Salmon Creek", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOnXO5O-5s0EcQCBxL5JMKmg9GgU9M2D7c5tzriDISy_oDkvVB&s"
